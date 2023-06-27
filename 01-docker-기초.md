@@ -116,9 +116,8 @@ kubectl cluster-info
 
 - 컨테이너 라이프 사이클
 
-![img.png](img/img.png)![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8ec891f1-7782-4f72-b407-0b644fa5a1eb/Untitled.png)
-
-![img_1.png](img/img_1.png)![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2e3d5aaa-7a09-4940-bfd0-a333c8458415/Untitled.png)
+![img.png](img/img.png)
+![img_1.png](img/img_1.png)
 
 - 컨테이너 시작
 
@@ -128,3 +127,31 @@ kubectl cluster-info
         - docker create [image]
         - docker start [container]
         - docker run [image]
+- 주요 옵션
+    - -i : 호스트의 표준 입력을 컨테이너와 연결 interactive
+    - -t : TTY 할당
+    - -it 로 함께 주로 사용됨 : ctrl + p + q 로 실행하면서 나오기
+    - -d : 백그라운드 실행
+    - —rm : 컨테이너 실행 종료 후 자동 삭제
+    - —name : 컨테이너 이름 지정
+    - -p 80:8000 : 호스트 - 컨테이너 간 포트 바인딩
+    - -v /opt/example:/example \ : 호스트 - 컨테이너 간 볼륨 바인딩
+
+- 컨테이너 일시 중지 및 재개
+    - 컨테이너 일시 중지
+        - docker pause [container]
+    - 컨테이너 재개
+        - docker unpause [container]
+- 컨테이너 종료
+    - 컨테이너 종료 SIGTERM 시그널 전달
+        - docker stop [container]
+    - 모든 컨테이너 종료
+        - docker stop $(docker ps -a -q)
+    - 컨테이너 강제 종료 SIGKILL 시그널 전달
+        - docker kill [container]
+
+### 03. 엔트리포인트와 커맨드
+
+Dockerfile 엔트리포인트와 커맨드
+
+도커 명령어 엔트리포인트와 커맨드
