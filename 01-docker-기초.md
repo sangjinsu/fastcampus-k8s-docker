@@ -90,7 +90,6 @@ kubectl cluster-info
         minikube kubectl
         ```
 
-
 ---
 
 ## 02. 도커를 이용한 컨테이너 관리
@@ -150,8 +149,33 @@ kubectl cluster-info
     - 컨테이너 강제 종료 SIGKILL 시그널 전달
         - docker kill [container]
 
-### 03. 엔트리포인트와 커맨드
+### 03. 도커 컨테이너 다루기: 엔트리포인트와 커맨드
 
-Dockerfile 엔트리포인트와 커맨드
+- 엔트리포인트
+    - 도커 컨테이너가 실행할 때 고정적으로 실행되는 스크립트, 명령어
+    - 생략시 지정된 명령어 수행
+- 커맨드
+    - 도커 컨테이너가 실행할 때 수행할 명령오 혹은 엔트리포인트에 지정된 명령어에 대한 인자 값
 
-도커 명령어 엔트리포인트와 커맨드
+실제 수행되는 컨테이너 명령어 [Entrypoint] [Command]
+
+Entrypoint 가 프리픽스로 지정되어 있음
+
+- Dockerfile 의 엔트리포인트와 커맨드
+    - ENTRYPOINT [”docker-entrypoint.sh”]
+    - CMD [”node”]
+    - 인 경우 실제 명령어는 아래와 같다
+
+        ```bash
+        [docker-entrypoint.sh](http://docker-entrypoint.sh) node
+        ```
+
+
+- 도커 명령어의 엔트리포인트와 커맨드
+
+    ```bash
+    docker run --entrypoint sh ubuntu:focal
+    docker run --entrypoint echo ubuntu:focal hello world 
+    ```
+
+도커 컨테이너 실행시에 엔트리포인트와 커맨드 모두 변경이 가능하다
