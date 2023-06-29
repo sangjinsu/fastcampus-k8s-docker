@@ -179,3 +179,58 @@ Entrypoint 가 프리픽스로 지정되어 있음
     ```
 
 도커 컨테이너 실행시에 엔트리포인트와 커맨드 모두 변경이 가능하다
+
+### 04. 도커 컨테이너 다루기: 환경 변수
+
+- -e run 옵션을 사용하여 환경변수 주입
+- 파일로 환경 변수 주입
+    - docker run -it —env-file ./환경변수파일.env
+
+### 05. 도커 컨테이너 다루기: 명령어 실행
+
+```bash
+docker exec [container] [command]
+```
+
+- 실행 중인 컨테이너에 접속 가능
+
+    ```bash
+    docker exec -it my-nginx bash
+    ```
+
+- 환경 변수 확인하기
+
+    ```bash
+    docker exec my-nginx env
+    ```
+
+### 06. 도커 컨테이너 다루기: 네트워크
+
+veth : vertual eth
+
+- docker 0: 도커 엔진에 의해 기본 생성되는 브릿지 네트워크 ⇒ veth 와 eth 간 다리 역할
+
+![img.png](img.png)
+
+- 컨테이너 포트를 호스트의 ip:post 와 연결하여 서비스 노출
+
+```bash
+docker run -p [Host IP:PORT]:[Container port] [container]
+
+docker run -d -p 127.0.0.1:80:80 nginx
+# ip 지정 
+
+docker run -d -p 80 nginx
+# 컨테이너의 80번 포트를 호스트의 사용 가능한 포트와 연결 후 실행 
+```
+
+- —expose : 문서화하는 용도로만 사용
+
+#### [도커 네트워크 드라이버](https://docs.docker.com/network/drivers/)
+
+- Single Host Networking
+    - bridge
+    - host
+    - none
+- Multi Host Networking
+    - overlay: 가상 네트워크
