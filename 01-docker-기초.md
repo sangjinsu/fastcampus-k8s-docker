@@ -138,16 +138,31 @@ kubectl cluster-info
 
 - 컨테이너 일시 중지 및 재개
     - 컨테이너 일시 중지
-        - docker pause [container]
+
+        ```bash
+        docker pause [container]
+        ```
+
     - 컨테이너 재개
-        - docker unpause [container]
+
+        ```bash
+        docker unpause [container]
+        ```
+
 - 컨테이너 종료
     - 컨테이너 종료 SIGTERM 시그널 전달
-        - docker stop [container]
+
+        ```bash
+        docker stop [container]
+        ```
+
     - 모든 컨테이너 종료
-        - docker stop $(docker ps -a -q)
+
+        ```bash
+        docker stop $(docker ps -a -q)
+        ```
+
     - 컨테이너 강제 종료 SIGKILL 시그널 전달
-        - docker kill [container]
 
 ### 03. 도커 컨테이너 다루기: 엔트리포인트와 커맨드
 
@@ -217,6 +232,9 @@ veth : vertual eth
 ```bash
 docker run -p [Host IP:PORT]:[Container port] [container]
 
+docker run -d -p 80:80 nginx
+# nginx 컨테이터의 80번 포트를 호스트 모든 IP의 80번와 연결하여 실행
+
 docker run -d -p 127.0.0.1:80:80 nginx
 # ip 지정 
 
@@ -224,13 +242,47 @@ docker run -d -p 80 nginx
 # 컨테이너의 80번 포트를 호스트의 사용 가능한 포트와 연결 후 실행 
 ```
 
-- —expose : 문서화하는 용도로만 사용
+- expose 옵션은 문서화 용도로 사용
+- publish 옵션은 실제 포트를 바인딩
 
 #### [도커 네트워크 드라이버](https://docs.docker.com/network/drivers/)
 
+- 네트워크 목록 확인
+
+    ```bash
+    docker network ls
+    ```
+
+- Native Drivers
+    - Bridge
+    - Host
+    - None
+    - Overlay
+- Remote Drivers
+    - 3rd-party Plugins
 - Single Host Networking
-    - bridge
+    - bridge : docker0(default) or user defined
+
+        ```bash
+        docker network create --driver=bridge sangjs
+        # 커스텀 브릿지 생성 
+        docker run -d --network=sangjs --net-alias=hello nginx
+        docker run -d --network=sangjs --net-alias=grafana grafana/grafana
+        ```
+
     - host
+
+        ```bash
+        docker run -d --network=host grafana/grafana
+        ```
+
     - none
+        - 네트워크가 필요 없는 경우 사용
+        - 커스텀 네트워크에 연결하는 경우 사용
+
+        ```bash
+        docker run -it --net none ubuntu:focal
+        ```
+
 - Multi Host Networking
-    - overlay: 가상 네트워크
+    - overlay: 컨테이너들을 연결시키는 가상 네트워크, 여러 클러스터에서 실행 시키는데 사용되는 네트워크 (docker swarm, kubernetes)
