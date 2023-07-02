@@ -291,7 +291,7 @@ docker run -d -p 80 nginx
 
 도커 레이어 아키텍처
 
-![docker-layer.png](..%2F..%2F..%2FDownloads%2Fdocker-layer.png)
+![docker-layer.png](img/docker-layer.png)
 
 - 컨테이너 레이어는 컨테이너 종료시 삭제되므로 임시 저장소로 사용
 - 영구적으로 저장할 방법
