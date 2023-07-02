@@ -286,3 +286,48 @@ docker run -d -p 80 nginx
 
 - Multi Host Networking
     - overlay: 컨테이너들을 연결시키는 가상 네트워크, 여러 클러스터에서 실행 시키는데 사용되는 네트워크 (docker swarm, kubernetes)
+
+### [07. 도커 컨테이너 다루기: 볼륨](https://towardsdatascience.com/docker-storage-598e385f4efe)
+
+도커 레이어 아키텍처
+
+![docker-layer.png](..%2F..%2F..%2FDownloads%2Fdocker-layer.png)
+
+- 컨테이너 레이어는 컨테이너 종료시 삭제되므로 임시 저장소로 사용
+- 영구적으로 저장할 방법
+    - 호스트 볼륨 - 호스트의 디렉토리를 컨테이너의 특정 경로에 마운트
+        -
+            - /opt/html 디렉터리를 nginx 웹 루트 디렉토리로 마운트
+
+        ```bash
+        docker run -d --name nginx -v $(pwd)/html:/usr/share/nginx/html nginx
+        ```
+
+    - 볼륨 컨테이너
+        - 특정 컨테이너의 볼륨 마운트를 공유
+
+        ```bash
+        docker run -d --name web-volume -it -v $(pwd)/html:/usr/share/nginx/html ubuntu:focal
+        
+        # my-volume 컨테이너의 볼륨을 공유
+        docker run -d --name nginx --volumes-from web-volume -p 80:80 nginx
+        docker run -d --name nginx2 --volumes-from web-volume -p 8080:80 nginx
+        ```
+
+    - 도커 볼륨
+        - 도커가 제공하는 볼륨 관리 기능을 활용하여 데이터 보존
+        - 기본적으로 /var/lib/dockers/volumes/$(volume-name)/_data 에 데이터 저장
+
+        ```bash
+        docker volume create --name db
+        
+        # 도커의 web-volume 볼륨을 nginx 웹 루트 디렉터리에 마운트 
+        docker run -d --name my-mysql -e MYSQL_DATABASE=my-db -e MYSQL_ROOT_PASSWORD=1234 -v db:/var/lib/mysql -p 3306:3306 mysql
+        ```
+
+    - 일기 전용 볼륨 연결
+        - 볼륨 연결 설정에 :ro 옵션을 통해 읽기 전용 마운트 옵션을 설정할 수 있음
+
+        ```bash
+        docker run -d --name nginx -v web-volume:/usr/share/nginx/html:ro nginx
+        ```
