@@ -1,6 +1,6 @@
 # Part1. Docker 기초
 
-## 01. Docker 기초 파트 개요
+# 01. Docker 기초 파트 개요
 
 컨테이너 기술의 발전 - 어떻게 서비스를 효율적으로 운영할 것인가?
 
@@ -11,11 +11,11 @@
 - Container Deployment - 컨테이너 엔진, 격리 기술 적용, 높은 성능 효율성, 높은 자원 효율성
 - K8S Deployment - 컨테이터 오케스트레이션 시스템
 
-### kustomize 소개
+## kustomize 소개
 
 - 쿠버네티스 매니페스트 파일 관리 도구
 
-### minikube 소개
+## minikube 소개
 
 가상환경을 사용하여 쿠버네티스 클러스터를 구현, 드라이버를 선택하여 원하는 도커, 버츄얼박스 등 가상환경에서 구성이 가능하다.
 
@@ -92,9 +92,9 @@ kubectl cluster-info
 
 ---
 
-## 02. 도커를 이용한 컨테이너 관리
+# 02. 도커를 이용한 컨테이너 관리
 
-### 01. 도커 이미지와 컨테이너
+## 01. 도커 이미지와 컨테이너
 
 - 이미지와 컨터이너는 도커 기본 단위
     - 이미지
@@ -111,7 +111,7 @@ kubectl cluster-info
 - 도커 이미지 저장소
     - 도커 이미지 관리 및 공유 서버 어플리케이션
 
-### 02. 도커 컨테이너 다루기: 컨테이너 라이프 사이클
+## 02. 도커 컨테이너 다루기: 컨테이너 라이프 사이클
 
 - 컨테이너 라이프 사이클
 
@@ -164,7 +164,7 @@ kubectl cluster-info
 
     - 컨테이너 강제 종료 SIGKILL 시그널 전달
 
-### 03. 도커 컨테이너 다루기: 엔트리포인트와 커맨드
+## 03. 도커 컨테이너 다루기: 엔트리포인트와 커맨드
 
 - 엔트리포인트
     - 도커 컨테이너가 실행할 때 고정적으로 실행되는 스크립트, 명령어
@@ -195,13 +195,13 @@ Entrypoint 가 프리픽스로 지정되어 있음
 
 도커 컨테이너 실행시에 엔트리포인트와 커맨드 모두 변경이 가능하다
 
-### 04. 도커 컨테이너 다루기: 환경 변수
+## 04. 도커 컨테이너 다루기: 환경 변수
 
 - -e run 옵션을 사용하여 환경변수 주입
 - 파일로 환경 변수 주입
     - docker run -it —env-file ./환경변수파일.env
 
-### 05. 도커 컨테이너 다루기: 명령어 실행
+## 05. 도커 컨테이너 다루기: 명령어 실행
 
 ```bash
 docker exec [container] [command]
@@ -219,7 +219,7 @@ docker exec [container] [command]
     docker exec my-nginx env
     ```
 
-### 06. 도커 컨테이너 다루기: 네트워크
+## 06. 도커 컨테이너 다루기: 네트워크
 
 veth : vertual eth
 
@@ -245,7 +245,7 @@ docker run -d -p 80 nginx
 - expose 옵션은 문서화 용도로 사용
 - publish 옵션은 실제 포트를 바인딩
 
-#### [도커 네트워크 드라이버](https://docs.docker.com/network/drivers/)
+### [도커 네트워크 드라이버](https://docs.docker.com/network/drivers/)
 
 - 네트워크 목록 확인
 
@@ -287,7 +287,7 @@ docker run -d -p 80 nginx
 - Multi Host Networking
     - overlay: 컨테이너들을 연결시키는 가상 네트워크, 여러 클러스터에서 실행 시키는데 사용되는 네트워크 (docker swarm, kubernetes)
 
-### [07. 도커 컨테이너 다루기: 볼륨](https://towardsdatascience.com/docker-storage-598e385f4efe)
+## [07. 도커 컨테이너 다루기: 볼륨](https://towardsdatascience.com/docker-storage-598e385f4efe)
 
 도커 레이어 아키텍처
 
@@ -332,9 +332,9 @@ docker run -d -p 80 nginx
         docker run -d --name nginx -v web-volume:/usr/share/nginx/html:ro nginx
         ```
 
-### 08. 도커 컨테이너 다루기: 로그
+## 08. 도커 컨테이너 다루기: 로그
 
-#### STDOUT / STDERR
+### STDOUT / STDERR
 
 ![img_1.png](img_1.png)
 
@@ -352,13 +352,13 @@ docker logs -f [container]
 docker logs -f -t [containter]
 ```
 
-#### 호스트 운영체제의 로그 저장 경로
+### 호스트 운영체제의 로그 저장 경로
 
 ```bash
 cat /var/lib/docker/containers/${CONTAINER_ID}/${CONTAINER_ID}-json.log
 ```
 
-#### 로그 용량 제한하기
+### 로그 용량 제한하기
 
 - 컨테이너 단위로 로그 용량 제한을 할 수 있지만 도커 엔진에서 기본 설정을 진행할 수도 있다
 - 운영 환경에서 필수 설정 필요
@@ -368,7 +368,41 @@ cat /var/lib/docker/containers/${CONTAINER_ID}/${CONTAINER_ID}-json.log
 docker run -d --log-driver=json-file --log-opt max-size=3m --log-opt max-file=5 nginx
 ```
 
-#### 도커 로그 드라이버
+### 도커 로그 드라이버
 
 ![img_2.png](img_2.png)
 
+## 09. 도커 이미지 다루기 - 이미지 빌드
+
+### 도커 이미지 구조
+
+![img_3.png](img_3.png)
+
+### 도커 파일 없이 이미지 생성
+
+- 기존 컨테이너를 기반으로 새 이미지 생성
+
+```bash
+# docker commit [options] continter [repository[:tag]]
+
+docker commit -a my-campus -m "first commit" ubuntu my_ubuntu:v1
+```
+
+### 도커 파일 이용하여 이미지 생성
+
+- -t : 빌드의 태그 생성
+- -f : 도커 파일의 경로 설정
+
+```bash
+docker build -t my-app:v1 ./
+```
+
+### 빌드 컨텍스트
+
+도커 빌드 명령 수행시 현재 디렉터리를 빌드 컨텍스트라고 한다. 도커 파일로부터 이미지 빌드에 필요한 정보를 도커 데몬에게 전달하기 위한 목적이다.
+
+### .dockerignore
+
+.gitignore 와 동일한 문법을 가지고 있다
+
+특정 디렉토리나 파일을 빌드 컨텍스트에서 제외하기 위한 목적이다.
