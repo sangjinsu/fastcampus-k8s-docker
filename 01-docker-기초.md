@@ -406,3 +406,53 @@ docker build -t my-app:v1 ./
 .gitignore 와 동일한 문법을 가지고 있다
 
 특정 디렉토리나 파일을 빌드 컨텍스트에서 제외하기 위한 목적이다.
+
+## 10. 도커 이미지 다루기 - dockerfile
+
+### [도커 파일 공식 홈페이지](https://docs.docker.com/engine/reference/builder/)
+
+Environment variables are supported by the following list of instructions in the`Dockerfile`:
+
+- `ADD`
+- `COPY`
+- `ENV`
+- `EXPOSE`
+- `FROM`
+- `LABEL`
+- `STOPSIGNAL`
+- `USER`
+- `VOLUME`
+- `WORKDIR`
+- `ONBUILD`
+
+### 도커 빌드
+
+```bash
+docker build --force-rm -t [도커 이미지]
+docker run -d [도커 이미지]
+```
+
+## 11. 도커 이미지 다루기 - 이미지 압축파일로 저장 및 불러오기
+
+### 이미지 압축 파일로 저장
+
+- 이미지를 tar 압축파일로 저장
+
+```bash
+docker save -o ubuntu_focal.tar ubuntu:focal
+```
+
+### 이미지 압축에서 불러오기
+
+- 이미지를 tar 압축파일로부터 불러옵니다
+
+```bash
+docker load -i ubuntu_focal.tar
+```
+
+## 12. 도커 이미지 다루기 - 도커 허브 저장소 이용
+
+```bash
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+```
