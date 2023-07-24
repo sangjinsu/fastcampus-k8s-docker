@@ -456,3 +456,119 @@ docker load -i ubuntu_focal.tar
 docker tag local-image:tagname new-repo:tagname
 docker push new-repo:tagname
 ```
+
+## 13. 도커 이미지 다루기 - AWS ECR 저장소 이용
+
+- AWS ECR 관리 방법
+
+## 14. 도커 이미지 다루기 - 이미지 경량화 전략
+
+- 패키지 설치시 캐시 삭제 고려 필요
+- [멀티 스테이지 파이프라인 전략](https://docs.docker.com/build/building/multi-stage/) 사용
+    - 패키지 의존성에 의한 비경량화 해소
+
+## 15. 도커 데몬 디버깅
+
+- 도커 시스템 정보
+
+    ```bash
+    docker system info
+    ```
+
+- 도커 시스템 이벤트 - 도커 demon 로그 실시간 확인
+
+    ```bash
+    docker system events 
+    ```
+
+- 도커 디스크 사용량 확인
+
+    ```bash
+    docker system df
+    
+    docker system df -v # 상세 내용 
+    ```
+
+- 도커 시스템 관련 파일 전체 제거
+
+    ```bash
+    docker system prune 
+    ```
+
+- 도커 메모리/CPU 등 사용량 확인
+
+    ```bash
+    docker stats
+    ```
+
+## 16. 도커를 이용한 컨테이너 관리 - 도커 컴포즈
+
+### 도커 컴포즈
+
+- 단일 서버에서 여러 컨테이너를 프로젝트 단위로 묶어서 관리
+- docker-compose.yml YAML 파일을 통해 명시적 관리
+- 프로젝트 단위로 도커 네트워크와 볼륨 관리
+- 프로젝트 내 서비스 간 의존성 정의 가능
+- 프로젝트 내 서비스 디스커버리 자동화
+- 손 쉬운 컨테이너 수평 확장
+
+### 프로젝트, 서비스, 컨테이너
+
+- 프로젝트
+    - 도커 컴포즈에서 다루는 워크스페이스 단위
+    - 함께 관리하는 서비스 컨테이너 묶음
+    - 프로젝트 단위로 기본 도커 네트워크가 생성 됨
+- 서비스
+    - 도커 컴포즈에서 컨테이너를 관리하기 위한 단위
+    - scale을 통해 서비스 컨테이너 수 확장 가능
+- 컨테이너
+    - 서비스를 통해 컨테이너 관리
+
+### docker-compose.yml
+
+version, services, networks, volumes 총 4개 최상위 옵션
+
+- 버전
+    - 3.9 버전이 최신
+    - 도커 엔진과 도커 컴포즈 버전에
+      따른 [호환성 매트릭스](https://docs.docker.com/compose/compose-file/compose-versioning/#compatibility-matrix) 참조 필요
+    - 버전 3부터 Docker Swarm 호환 - Swarm 서비스를 docker-compose.yml 로 정의 가능
+- 도커 스웜
+    - 여러 서버를 기반으로 스웜 클러스터를 형성하여 컨테이너를 관리하는 컨테이너 오케스트레이션 시스템
+    - 쿠버네티스와 동일 목적으로 만들어졌지만 인기가 없음
+
+### 도커 컴포즈 명령어
+
+```bash
+# 실행
+docker-compose up 
+# 백그라운드 실행
+docker-compose up -d
+# 프로젝트명 변경하여 프로젝트 실행
+docker-compose -p [project name] up -d 
+# 프로젝트 내 컨테이너 및 네트워크 종료 및 제거 
+docker-compose down 
+# 프로젝트 내 컨테이너, 네트워크 및 볼륨 종료 및 제거
+docker-compose down -v
+
+# 프로젝트 내 서비스 로그 확인
+docker-compose logs
+# 프로젝트 내 컨테이너 이벤트 확인 
+docker-compose events
+# 프로젝트 내 이미지 목록 
+docker-compose images
+# 프로젝트 내 컨테이너 목록 
+docker-compose ps 
+# 프로젝트 내 실행 중인 프로세스 목록 
+docker-compose top
+```
+
+### 주요 사용 목적
+
+- 로컬 개발 환경 구성
+    - 특정 프로젝트의 로컬 개발 환경 구성 목적으로 사용
+    - 프로젝트 의존성을 쉽게 띄울 수 있음
+- 자동화된 테스트 환경 구성
+    - CI/CD 파이프라인 중 쉽게 격리된 테스트 환경을 구성하여 테스트 수행 가능
+- 단일 호스트 내 컨테이너를 선언적 관리
+    - 단일 서버에서 컨테이너를 관리할 때 yaml 파일을 통해 선언적으로 관리 가능
