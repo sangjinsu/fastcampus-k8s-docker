@@ -63,3 +63,16 @@
     ```bash
     sudo systemctl status docker
     ```
+
+## 02. Gradle을 활용한 빌드 준비
+
+Gradle 은 Groovy 를 이용한 빌드 자동화 시스템이다.
+
+### Gradle 수행 순서
+
+1. 초기화 단계
+    - Gradle에 빌드할 프로젝트를 설정하고 생성
+2. 구성 단계
+    - 프로젝트 객체가 구성함. 빌드에 포함할 프로젝트의 빌드 스크립트 및 Task 생성
+3. 실행 단계
+    - Gradle 의 모든 Task 를 통합하고 빌드를 실행 
