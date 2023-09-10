@@ -76,3 +76,15 @@ Gradle 은 Groovy 를 이용한 빌드 자동화 시스템이다.
     - 프로젝트 객체가 구성함. 빌드에 포함할 프로젝트의 빌드 스크립트 및 Task 생성
 3. 실행 단계
     - Gradle 의 모든 Task 를 통합하고 빌드를 실행 
+
+
+## 03. Jenkins 소개와 설치 
+
+젠킨스는 소프트웨어 개발시 지속적 통합 소비스를 제공하는 툴이다. 버전 충돌 방지를 위해 작업한 내용을 공유 영역에 
+있는 Git 등의 저장소에 빈번히 업로드함으로써 지속적 통합이 가능하도록 해준다.
+
+## 04. Jenkins를 활용한 Docker 빌드 
+
+```bash
+docker run --name jenkins -d -p 8080:8080 -v ~/jenkins:/var/jenkins_home -u root jenkins/jenkins
+```
